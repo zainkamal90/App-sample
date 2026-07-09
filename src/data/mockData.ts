@@ -1,0 +1,312 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { Trainer, Gym, UserProfile, WorkoutPlan, NutritionPlan, DailyActivity, PushNotification } from '../types';
+
+export const INITIAL_USER: UserProfile = {
+  id: 'user_01',
+  name: 'Alex Johnson',
+  email: 'alex.j@aurafit.com',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+  height: 178,
+  weight: 79.5,
+  targetWeight: 75.0,
+  dailyStepGoal: 10000,
+  dailyCalorieGoal: 2200,
+  waterGoal: 2500,
+  streak: 5,
+  role: 'user',
+  trainerFavorites: ['trainer_01'],
+  gymFavorites: ['gym_01'],
+};
+
+export const MOCK_TRAINERS: Trainer[] = [
+  {
+    id: 'trainer_01',
+    name: 'Marcus Vance',
+    avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=150',
+    bio: 'Former collegiate athlete specializing in strength conditioning, powerlifting, and body recomposition. I help you build sustainable lifting habits and gain structural strength.',
+    rating: 4.9,
+    reviewsCount: 142,
+    specialty: 'Strength',
+    level: 'Elite',
+    rate: 85,
+    certs: ['CSCS (Certified Strength & Conditioning Specialist)', 'NASM-PES', 'USA Powerlifting Coach'],
+    availability: ['09:00', '10:00', '11:00', '13:00', '15:00', '16:00'],
+    gymId: 'gym_01',
+    reviews: [
+      {
+        id: 'rev_101',
+        trainerId: 'trainer_01',
+        userName: 'Jason Miller',
+        userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=80',
+        rating: 5,
+        comment: 'Marcus is an absolute professional. He completely rebuilt my squat and deadlift mechanics. My lower back pain is completely gone and I have added 40lbs to my squat!',
+        date: '2026-06-25',
+      },
+      {
+        id: 'rev_102',
+        trainerId: 'trainer_01',
+        userName: 'Clara Oswald',
+        userAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=80',
+        rating: 4.8,
+        comment: 'Super knowledgeable and keeps me highly accountable. The personalized workout sheets are super detailed.',
+        date: '2026-06-18',
+      },
+    ],
+  },
+  {
+    id: 'trainer_02',
+    name: 'Elena Rostova',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
+    bio: 'Dedicated yogi with 12+ years of international teaching experience. Specializing in Vinyasa flow, Yin yoga, and mindfulness-based stress reduction (MBSR). Let’s align mind and movement.',
+    rating: 5.0,
+    reviewsCount: 96,
+    specialty: 'Yoga & Mindfulness',
+    level: 'Master',
+    rate: 95,
+    certs: ['RYT-500 Advanced Yoga Alliance', 'MBSR Certified Practitioner', 'Breathwork Specialist'],
+    availability: ['08:00', '09:30', '11:00', '14:30', '16:00', '17:30'],
+    gymId: 'gym_02',
+    reviews: [
+      {
+        id: 'rev_201',
+        trainerId: 'trainer_02',
+        userName: 'Sophia Laurent',
+        userAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=80',
+        rating: 5,
+        comment: 'Elena’s classes feel like a physical and spiritual sanctuary. Her voice cues are incredibly clear and the mental clarity I achieve after our sessions is priceless.',
+        date: '2026-06-28',
+      },
+    ],
+  },
+  {
+    id: 'trainer_03',
+    name: 'David Chen',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+    bio: 'HIIT and high-performance cardiovascular coach. I utilize science-backed heart-rate zone training to maximize calorie burn, elevate metabolic threshold, and build lung power.',
+    rating: 4.8,
+    reviewsCount: 218,
+    specialty: 'Cardio & HIIT',
+    level: 'Pro',
+    rate: 70,
+    certs: ['NASM-CPT', 'F45 Head Trainer Certificate', 'Precision Nutrition L1'],
+    availability: ['07:00', '08:00', '10:00', '12:00', '15:00', '18:00'],
+    gymId: 'gym_03',
+    reviews: [
+      {
+        id: 'rev_301',
+        trainerId: 'trainer_03',
+        userName: 'Marcus Aurelius',
+        userAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=80',
+        rating: 5,
+        comment: 'Incredible energy! David’s HIIT sessions are brutal but incredibly satisfying. Lost 12 pounds in 6 weeks following his zone-2 cardio and high intensity circuits.',
+        date: '2026-07-02',
+      },
+    ],
+  },
+  {
+    id: 'trainer_04',
+    name: 'Dr. Sarah Jenkins',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150',
+    bio: 'Doctor of Physical Therapy and athletic rehab specialist. I specialize in post-injury recovery, joint mobilization, corrective ergonomics, and rebuilding full range of motion safely.',
+    rating: 4.9,
+    reviewsCount: 84,
+    specialty: 'Rehab & Mobility',
+    level: 'Master',
+    rate: 110,
+    certs: ['DPT (Doctor of Physical Therapy)', 'FMS (Functional Movement Screen) L2', 'Board Certified Sports Specialist'],
+    availability: ['09:00', '10:30', '13:00', '14:30', '16:00'],
+    gymId: 'gym_01',
+    reviews: [
+      {
+        id: 'rev_401',
+        trainerId: 'trainer_04',
+        userName: 'Robert Downey',
+        userAvatar: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&q=80&w=80',
+        rating: 5,
+        comment: 'After my ACL surgery, Sarah was instrumental in my rehabilitation. She explains the biomechanics behind every single stretch and exercise. Highly, highly recommend.',
+        date: '2026-07-01',
+      },
+    ],
+  },
+];
+
+export const MOCK_GYMS: Gym[] = [
+  {
+    id: 'gym_01',
+    name: 'Apex Performance Hub',
+    address: '150 Varick St, New York, NY 10013',
+    lat: 40.7262,
+    lng: -74.0064,
+    rating: 4.9,
+    facilities: ['Olympic Platforms', 'Infrared Sauna', 'Cryo Chamber', 'Indoor Turf Track', 'Premium Locker Rooms'],
+    trainers: ['trainer_01', 'trainer_04'],
+    distance: '0.8 miles',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    id: 'gym_02',
+    name: 'Zenith Yoga & Wellness',
+    address: '450 Broadway, New York, NY 10013',
+    lat: 40.7214,
+    lng: -74.0018,
+    rating: 4.8,
+    facilities: ['Heated Rooms', 'Meditation Pods', 'Organic Tea Lounge', 'Reformer Pilates Studio', 'Sound Bath Arena'],
+    trainers: ['trainer_02'],
+    distance: '1.4 miles',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    id: 'gym_03',
+    name: 'Vortex Athletic Club',
+    address: '78 Grand St, New York, NY 10013',
+    lat: 40.7225,
+    lng: -74.0042,
+    rating: 4.7,
+    facilities: ['Heart-rate Treadmills', 'Indoor Olympic Pool', 'Cold Plunge Pools', 'Premium Juice & Fuel Bar', 'Powerlifting Racks'],
+    trainers: ['trainer_03'],
+    distance: '2.1 miles',
+    imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=400',
+  },
+];
+
+export const DEFAULT_WORKOUT_PLAN: WorkoutPlan = {
+  id: 'plan_01',
+  title: 'Lean Bulk & Strength Reconstitution',
+  description: 'Designed to build robust strength while managing body fat. Emphasizes compound progression with highly precise rest cycles.',
+  durationWeeks: 6,
+  difficulty: 'Intermediate',
+  exercises: [
+    {
+      id: 'ex_01',
+      name: 'Barbell Back Squat',
+      reps: '4 sets x 6 reps',
+      sets: 4,
+      description: 'Keep chest upright, brace core intensely, break parallel at bottom.',
+      completed: false,
+    },
+    {
+      id: 'ex_02',
+      name: 'Incline Dumbbell Bench Press',
+      reps: '3 sets x 8 reps',
+      sets: 3,
+      description: '30-degree incline, control the eccentric phase, full lock out at top.',
+      completed: false,
+    },
+    {
+      id: 'ex_03',
+      name: 'Romanian Deadlift (RDL)',
+      reps: '3 sets x 10 reps',
+      sets: 3,
+      description: 'Hinge hips backwards, feel deep hamstring stretch, keep spine neutral.',
+      completed: false,
+    },
+    {
+      id: 'ex_04',
+      name: 'Pull-Ups (Weighted or Assisted)',
+      reps: '3 sets x Max reps',
+      sets: 3,
+      description: 'Full hang at bottom, drive elbows down, chin completely over bar.',
+      completed: false,
+    },
+    {
+      id: 'ex_05',
+      name: 'Plank with Shoulder Taps',
+      reps: '3 sets x 45 seconds',
+      sets: 3,
+      description: 'Avoid hip swaying, keep body straight as a board, tap slowly.',
+      completed: false,
+    },
+  ],
+};
+
+export const DEFAULT_NUTRITION_PLAN: NutritionPlan = {
+  id: 'nut_01',
+  title: 'Precision Macronutrient Rebalancing',
+  targetCalories: 2200,
+  proteinGoal: 165, // g
+  carbsGoal: 220, // g
+  fatsGoal: 70, // g
+  meals: [
+    {
+      id: 'meal_01',
+      type: 'Breakfast',
+      name: 'Whey Protein Oatmeal with Berries & Almond Butter',
+      calories: 520,
+      protein: 42,
+      carbs: 58,
+      fats: 14,
+      logged: false,
+    },
+    {
+      id: 'meal_02',
+      type: 'Lunch',
+      name: 'Grilled Chicken Breast, Brown Rice, and Roasted Broccoli',
+      calories: 680,
+      protein: 55,
+      carbs: 72,
+      fats: 12,
+      logged: false,
+    },
+    {
+      id: 'meal_03',
+      type: 'Dinner',
+      name: 'Pan-Seared Salmon, Quinoa, and Asparagus with Olive Oil',
+      calories: 710,
+      protein: 48,
+      carbs: 48,
+      fats: 32,
+      logged: false,
+    },
+    {
+      id: 'meal_04',
+      type: 'Snack',
+      name: 'Greek Yogurt (0%) with Chia Seeds and 1 Apple',
+      calories: 290,
+      protein: 20,
+      carbs: 42,
+      fats: 12,
+      logged: false,
+    },
+  ],
+};
+
+export const MOCK_ACTIVITY_HISTORY: DailyActivity[] = [
+  { date: '2026-07-01', steps: 9420, activeMinutes: 45, waterConsumed: 2100, caloriesConsumed: 2150 },
+  { date: '2026-07-02', steps: 11200, activeMinutes: 60, waterConsumed: 2800, caloriesConsumed: 2300 },
+  { date: '2026-07-03', steps: 8100, activeMinutes: 30, waterConsumed: 1900, caloriesConsumed: 1980 },
+  { date: '2026-07-04', steps: 12400, activeMinutes: 75, waterConsumed: 3100, caloriesConsumed: 2450 },
+  { date: '2026-07-05', steps: 10050, activeMinutes: 50, waterConsumed: 2500, caloriesConsumed: 2180 },
+  { date: '2026-07-06', steps: 10500, activeMinutes: 55, waterConsumed: 2600, caloriesConsumed: 2210 },
+  { date: '2026-07-07', steps: 4200, activeMinutes: 20, waterConsumed: 1200, caloriesConsumed: 1100 }, // Today so far
+];
+
+export const INITIAL_NOTIFICATIONS: PushNotification[] = [
+  {
+    id: 'notif_01',
+    title: 'Consultation Confirmed',
+    body: 'Your 30-min video consultation with Marcus Vance is scheduled for tomorrow at 10:00 AM.',
+    timestamp: '2026-07-07T08:30:00Z',
+    read: false,
+    type: 'booking',
+  },
+  {
+    id: 'notif_02',
+    title: 'Daily Water Goal Achieved!',
+    body: 'Great job staying hydrated. You have hit your 2,500ml water goal today.',
+    timestamp: '2026-07-06T19:45:00Z',
+    read: true,
+    type: 'goal',
+  },
+  {
+    id: 'notif_03',
+    title: 'Trainer Message',
+    body: 'Marcus Vance sent you a message: "Hey Alex! Just uploaded your updated shoulder conditioning plan..."',
+    timestamp: '2026-07-06T14:12:00Z',
+    read: true,
+    type: 'chat',
+  },
+];

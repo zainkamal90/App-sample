@@ -1,0 +1,6 @@
+{
+  "name": "Fitness Consulting & Booking App",
+  "description": "An all-in-one Fitness Consulting and Booking application featuring trainer discovery, personalized workout and nutrition plans, chat, video consultations, and progress tracking.",
+  "requestFramePermissions": ["camera", "microphone", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
